@@ -86,9 +86,9 @@ int binary_search_recr(int arr[],int l,int h,int num)
         if(arr[mid]==num)
             return mid;
         else if(arr[mid]>num)
-            binary_search_recr(arr,l,mid-1,num);
+            return binary_search_recr(arr,l,mid-1,num);
         else
-            binary_search_recr(arr,mid+1,h,num);
+            return binary_search_recr(arr,mid+1,h,num);
     }
 
     return -1;
