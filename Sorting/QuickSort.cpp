@@ -21,10 +21,10 @@ int main()
     auto start = std::chrono::high_resolution_clock::now();
     quickSort(arr, 0, size - 1);
     auto stop = std::chrono::high_resolution_clock::now();
-    auto duration =std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    auto duration =std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
     cout << "\nAfter sorting :";
     print_array(arr, size);
-    cout << "Time taken by Quick Sort function: " << duration.count() << " microseconds\n";   
+    cout << "Time taken by Quick Sort function: " << duration.count() << " milliseconds\n";   
     return 0;
 }
 
