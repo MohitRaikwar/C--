@@ -4,7 +4,9 @@
 using namespace std;
 
 typedef pair<int, int> iPair;
+
 const int V = 5;
+
 void heapify(vector<iPair> &hT, int i);
 void print_heap(vector<iPair> &ht);
 
@@ -17,14 +19,13 @@ void print_MST(int adj[V][V], int V);
 
 int main()
 {
+    // weighted adjacency matrix
     int adj[V][V] = {
         {INT_MAX, 3, 6, 3, INT_MAX},
         {3, INT_MAX, INT_MAX, 1, 4},
         {6, INT_MAX, INT_MAX, 2, INT_MAX},
         {INT_MAX, 1, 2, INT_MAX, 2},
         {INT_MAX, 4, INT_MAX, 2, INT_MAX}};
-    // get adjacency matrix
-    // set key value to infinte and parent null for each vertices
     print_MST(adj, V);
     return 0;
 }
@@ -32,21 +33,30 @@ int main()
 void print_MST(int adj[V][V], int V)
 {
     vector<iPair> priorityQueue;
+
+    // set key value to infinte
     vector<int> key(V, INT_MAX);
+
+    // set parent value to -1
     vector<int> parent(V, -1);
+
+    // to keep track of traversed vertices
     vector<bool> inMST(V, false);
 
+    // fill up priority queue vector <key, index to the vertex in orginal >
     for (int i = 0; i < V; i++)
         priorityQueue.push_back(make_pair(INT_MAX, i));
 
     // set root key value to 0
     int src{0};
     priorityQueue[src].first = 0;
+
+    // make min heap
     make_heap(priorityQueue.begin(), priorityQueue.end(), comparator);
     key[src] = 0;
 
     // loop for while Q not equal to 0
-    while (!priorityQueue.empty())
+    while (!priorityQueue.empty()) // O(V)
     {
         // EXTRACT_MIN
         int u = heap_extract_min(priorityQueue);
@@ -54,38 +64,35 @@ void print_MST(int adj[V][V], int V)
             continue;
         else
         {
-            // loop over adjacent elements and check if weight b/w them is less than
-            // then set parent of v to i
-            // set its key
             inMST[u] = true;
-            for (int i = 0; i < V; i++)
+            // loop over adjacent elements
+            for (int i = 0; i < V; i++) // O(V)
             {
-                cout<<"\nFor vertex "<<u<<" , "<<i<<"\n";
-
                 if (adj[u][i] != INT_MAX)
                 {
                     int weight = adj[u][i];
+
+                    // to get index in priorityQueue(for comaprison in key value with weighted adjaceny matrix weight)
                     int j;
-                    for (j = 0; j < V; j++)
+                    for (j = 0; j < V; j++) // O(V)
                         if (priorityQueue[j].second == i)
                             break;
                     if (!inMST[i] && weight < priorityQueue[j].first)
                     {
-                        cout << "\nBefore heap decrease :\n";
-                        print_heap(priorityQueue);
+                        // set its key
                         key[i] = weight;
+
+                        // then set parent of i to u
                         parent[i] = u;
 
-                        heap_decrease_key(priorityQueue, j, weight);
-                        cout << "\nAfter heap decrease :\n";
-                        print_heap(priorityQueue);
+                        heap_decrease_key(priorityQueue, j, weight); // O(lgV)
                     }
                 }
             }
         }
     }
-    for (int i = 0; i < V; i++)
-        cout << parent[i] << " - " << i << "\n";
+    for (int i = 1; i < V; i++)
+        cout << "Edge " << parent[i] << " - " << i << " Weight : " << key[i] << "\n";
 }
 
 // Min Heap Implementation
@@ -112,7 +119,7 @@ void heapify(vector<iPair> &hT, int i)
         min = rightChild;
     if (min != i)
     {
-        // swap(&hT[i], &hT[min]);
+        hT[i].swap(hT[min]);
         heapify(hT, min);
     }
 }
