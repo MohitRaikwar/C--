@@ -25,6 +25,7 @@ int main()
         printArr(arr,n);
     else
         cout<<"Queens can't be placed\n";
+    delete[] arr;
     return 0;
 }
 
